@@ -61,10 +61,8 @@ todoButton.addEventListener('click', () => {
 // 	console.log(data.task.title)
 // })
 
-
 function onTasksReceived(dates) {
 	document.querySelector('.todo__list').innerHTML = '';
-
 	dates.forEach(data => {
 		const li = document.createElement('li');
 		li.className = 'task';
@@ -76,41 +74,36 @@ function onTasksReceived(dates) {
 		buttonDelete.innerHTML = 'удалить';
 		document.querySelector('.todo__list').append(buttonDelete);
 		buttonDelete.dataset.id = data.id;
-		buttonDelete.addEventListener('click', () => {
-			const attr = buttonDelete.dataset.id;
-			deleteTasks(attr);
-			document.querySelector(`li.task[data-id="${attr}"]`).style.display = 'none';
-			document.querySelector(`button.delete[data-id="${attr}"]`).style.display = 'none';
-		});
 		const buttonUpdate = document.createElement('button');
 		buttonUpdate.className = 'update';
 		buttonUpdate.innerHTML = 'редактировать';
 		document.querySelector('.todo__list').append(buttonUpdate);
 		buttonUpdate.dataset.id = data.id;
-		buttonUpdate.addEventListener('click', () => {
-			const boxUpdate = document.createElement('input');
-
+		buttonDelete.addEventListener('click', () => {
 			const attr = buttonDelete.dataset.id;
+			deleteTasks(attr);
+			document.querySelector(`li.task[data-id="${attr}"]`).style.display = 'none';
+			document.querySelector(`button.delete[data-id="${attr}"]`).style.display = 'none';
+			document.querySelector(`button.update[data-id="${attr}"]`).style.display = 'none';
+		});
+		buttonUpdate.addEventListener('click', () => {
+			const attr = buttonDelete.dataset.id;
+			const boxUpdate = document.createElement('input');
 			boxUpdate.dataset.id = attr;
 			document.querySelector(`li.task[data-id="${attr}"]`).append(boxUpdate);
-
 			document.querySelector(`button.update[data-id="${attr}"]`).style.display = 'none';
 			const saveButton = document.createElement('button');
 			saveButton.innerHTML = 'сохранить';
+			saveButton.className = 'save';
 			saveButton.dataset.id = attr;
 			document.querySelector(`li.task[data-id="${attr}"]`).append(saveButton);
 			saveButton.addEventListener('click', () => {
 				const taskUpdate = document.querySelector(`input[data-id="${attr}"]`);
 				updateTasks(saveButton.dataset.id, taskUpdate.value);
+				li.innerHTML = taskUpdate.value;
+				document.querySelector(`button.update[data-id="${attr}"]`).style.display = 'inline-block';
 			})
-
-
-
 		})
-
-
-
-
 	});
 
 }
